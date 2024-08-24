@@ -1,4 +1,5 @@
 # Class diagram
+
 ```mermaid
 ---
 title: Sudoku solver bot
@@ -6,6 +7,6 @@ title: Sudoku solver bot
 classDiagram
   class Sudoku {
   - List sudoku
-  + Sudoku solve_sudoku
+  + Sudoku solve_sudoku (sudoku)
 }
 ```

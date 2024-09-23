@@ -59,11 +59,12 @@ classDiagram
 ## Main classes:
 
 "SudokuGUI" is a graphical user interface for generating and solving Sudoku puzzles.
-    Attributes:
+
+    -Attributes:
         root (tk.Tk): The root window of the Tkinter application.
         sudoku (Sudoku): An instance of the Sudoku class that handles the puzzle logic.
         entries (list): A 2D list of Tkinter Entry widgets representing the Sudoku grid.
-    Methods:
+    -Methods:
         __init__(root, sudoku):
             Initializes the SudokuGUI with the given root window and Sudoku instance.
         create_widgets():
@@ -76,9 +77,10 @@ classDiagram
             Updates the GUI grid with the values from the Sudoku puzzle. Sets cells to read-only if they contain a value.
 
 "Grid" is a class to represent a Sudoku grid.
-    Attributes:
+
+    -Attributes:
         values (list): A list representing the values in the Sudoku grid.
-    Methods:
+    -Methods:
       __init__(values):
           Initializes the grid given a number of values.
       It also has a getter and a setter for its initializing values.
@@ -88,11 +90,12 @@ classDiagram
 "Row" represents a row. Inherits from Grid.
 
 "Subgrid" is a class to represent a 3x3 subgrid in a Sudoku puzzle.
-    Attributes:
+    
+    -Attributes:
         _grid (list of list of int): The 3x3 grid representing the subgrid.
         rows (list of Row): List of Row objects representing each row in the subgrid.
         cols (list of Col): List of Col objects representing each column in the subgrid.
-    Methods:
+    -Methods:
         __init__(grid):
             Initializes the Subgrid with a 3x3 grid.
         grid:
@@ -100,9 +103,10 @@ classDiagram
         grid(new_grid):
             A setter that updates the grid. Raises ValueError if the new grid is not 3x3.
 "Sudoku": A class that represents a Sudoku puzzle.
-    Attributes:
+
+    -Attributes:
         size (int): The size of the Sudoku grid (default is 9).
-    Methods:
+    -Methods:
         __init__(grid=None):
             Initializes the Sudoku grid. If a grid is provided, it validates the grid.
             Otherwise, it creates an empty 9x9 grid.

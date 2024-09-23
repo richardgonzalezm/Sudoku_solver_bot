@@ -1,4 +1,3 @@
-# Class diagram
 # Sudoku solver bot
 
 ## Description
@@ -14,16 +13,11 @@ title: Sudoku solver bot
 ---
 classDiagram
   class Sudoku {
-  - List sudoku
-  + solve_sudoku(self)
-  + is_possible(x, y , value, self)
-  + get_sub_grid(x, y , self)
-  + find_sub_grid_coordinates(value)
-  + print_sudoku(self)
     - List of Lists: sudoku
     + __init__(self, )
     + solve_sudoku(self)
     + is_possible(self, x, y): Bool
+
     + print_sudoku(self)
   }
   class SubGrid{
@@ -39,7 +33,7 @@ classDiagram
     + read_sudoku(self) sudoku
     + upload_sudoku(self, sudoku)
   }
-}
+
   class ScrapperNYTimes {
     - str: nyTimes_link
     + __init__(self)

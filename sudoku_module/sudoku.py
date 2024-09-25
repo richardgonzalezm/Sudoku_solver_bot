@@ -1,6 +1,5 @@
 import random
 
-
 class Line:
     def __init__(self, values):
         self._values = values
@@ -15,6 +14,15 @@ class Line:
             raise ValueError(
                 "New values must have the same length as the original values.")
         self._values = new_values
+
+    def is_valid(self, num):
+        return num not in self._values
+
+    def find_empty(self):
+        for i, value in enumerate(self._values):
+            if value == 0:
+                return i
+        return None
 
 
 class Row(Line):
@@ -43,6 +51,21 @@ class Subgrid:
             raise ValueError("Subgrid must be a 3x3 grid.")
         self._grid = new_grid
 
+    def is_valid(self, num):
+        for row in self.rows:
+            if not row.is_valid(num):
+                return False
+        for col in self.cols:
+            if not col.is_valid(num):
+                return False
+        return True
+
+    def find_empty(self):
+        for i in range(3):
+            for j in range(3):
+                if self._grid[i][j] == 0:
+                    return (i, j)
+        return None
 
 class Sudoku(Subgrid):
     def __init__(self, grid=None):
@@ -56,24 +79,21 @@ class Sudoku(Subgrid):
         self.size = 9
 
     def is_valid(self, num, pos):
+        row, col = pos
         # Check row
-        for i in range(self.size):
-            if self.grid[pos[0]][i] == num and pos[1] != i:
-                return False
+        if not self.rows[row].is_valid(num):
+            return False
 
         # Check column
-        for i in range(self.size):
-            if self.grid[i][pos[1]] == num and pos[0] != i:
-                return False
+        if not self.cols[col].is_valid(num):
+            return False
 
         # Check subgrid
-        subgrid_x = pos[1] // 3
-        subgrid_y = pos[0] // 3
-
-        for i in range(subgrid_y * 3, subgrid_y * 3 + 3):
-            for j in range(subgrid_x * 3, subgrid_x * 3 + 3):
-                if self.grid[i][j] == num and (i, j) != pos:
-                    return False
+        subgrid_x = col // 3
+        subgrid_y = row // 3
+        subgrid = Subgrid([self.grid[subgrid_y * 3 + i][subgrid_x * 3:subgrid_x * 3 + 3] for i in range(3)])
+        if not subgrid.is_valid(num):
+            return False
 
         return True
 

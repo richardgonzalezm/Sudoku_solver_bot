@@ -1,5 +1,6 @@
 import random
 
+
 class Line:
     def __init__(self, values):
         self._values = values
@@ -15,24 +16,21 @@ class Line:
                 "New values must have the same length as the original values.")
         self._values = new_values
 
-    def is_valid(self, num):
-        return num not in self._values
-
-    def find_empty(self):
-        for i, value in enumerate(self._values):
-            if value == 0:
-                return i
-        return None
+# Esta clase representa una fila.
 
 
 class Row(Line):
     def __init__(self, values):
         super().__init__(values)
 
+# Esta clase representa una columna.
+
 
 class Col(Line):
     def __init__(self, values):
         super().__init__(values)
+
+# Esta clase representa una subcuadrícula, hecha de filas y columnas.
 
 
 class Subgrid:
@@ -51,60 +49,90 @@ class Subgrid:
             raise ValueError("Subgrid must be a 3x3 grid.")
         self._grid = new_grid
 
-    def is_valid(self, num):
-        for row in self.rows:
-            if not row.is_valid(num):
+    def is_valid(self, num, pos):
+        # Verifica si un número dado puede ser colocado en la columna, fila y subgrid
+        for i in range(3):
+            if self.grid[pos[0]][i] == num and pos[1] != i:
                 return False
-        for col in self.cols:
-            if not col.is_valid(num):
+
+        for i in range(3):
+            if self.grid[i][pos[1]] == num and pos[0] != i:
                 return False
+
+        subgrid_x = pos[1] // 3
+        subgrid_y = pos[0] // 3
+
+        for i in range(subgrid_y * 3, subgrid_y * 3 + 3):
+            for j in range(subgrid_x * 3, subgrid_x * 3 + 3):
+                if self.grid[i][j] == num and (i, j) != pos:
+                    return False
+
         return True
 
     def find_empty(self):
+        # Encuentra una celda vacía en la subcuadrícula
         for i in range(3):
             for j in range(3):
-                if self._grid[i][j] == 0:
-                    return (i, j)
+                if self.grid[i][j] == 0:
+                    return (i, j)  # row, col
         return None
+
+# Esta clase representa un Sudoku, que es una subcuadrícula.
+
 
 class Sudoku(Subgrid):
     def __init__(self, grid=None):
         if grid:
             if len(grid) != 9 or any(len(row) != 9 for row in grid):
                 raise ValueError("Sudoku grid must be a 9x9 grid.")
-            super().__init__(grid)
+            self._grid = grid
         else:
             # Crea una cuadrícula vacía
             self._grid = [[0 for _ in range(9)] for _ in range(9)]
         self.size = 9
+        self.subgrids = [[Subgrid([self._grid[r + i][c:c + 3] for i in range(3)])
+                          for c in range(0, 9, 3)] for r in range(0, 9, 3)]
+
+    @property
+    def grid(self):
+        return self._grid
+
+    @grid.setter
+    def grid(self, new_grid):
+        if len(new_grid) != 9 or any(len(row) != 9 for row in new_grid):
+            raise ValueError("Grid must be a 9x9 grid.")
+        self._grid = new_grid
 
     def is_valid(self, num, pos):
-        row, col = pos
-        # Check row
-        if not self.rows[row].is_valid(num):
-            return False
+        # Verifica si un número dado puede ser colocado en la columna, fila y subgrid
+        for i in range(9):
+            if self.grid[pos[0]][i] == num and pos[1] != i:
+                return False
 
-        # Check column
-        if not self.cols[col].is_valid(num):
-            return False
+        for i in range(9):
+            if self.grid[i][pos[1]] == num and pos[0] != i:
+                return False
 
-        # Check subgrid
-        subgrid_x = col // 3
-        subgrid_y = row // 3
-        subgrid = Subgrid([self.grid[subgrid_y * 3 + i][subgrid_x * 3:subgrid_x * 3 + 3] for i in range(3)])
-        if not subgrid.is_valid(num):
-            return False
+        subgrid_x = pos[1] // 3
+        subgrid_y = pos[0] // 3
+
+        for i in range(subgrid_y * 3, subgrid_y * 3 + 3):
+            for j in range(subgrid_x * 3, subgrid_x * 3 + 3):
+                if self.grid[i][j] == num and (i, j) != pos:
+                    return False
 
         return True
 
     def find_empty(self):
-        for i in range(self.size):
-            for j in range(self.size):
+        # Encuentra una celda vacía en la cuadrícula
+        for i in range(9):
+            for j in range(9):
                 if self.grid[i][j] == 0:
                     return (i, j)  # row, col
         return None
 
     def solve(self):
+        # Usa backtracking para resolver el Sudoku
         find = self.find_empty()
         if not find:
             return True
@@ -122,7 +150,7 @@ class Sudoku(Subgrid):
 
         return False
 
-    def generate_sudoku(self, clues=30):
+    def generate_sudoku(self, clues=20):
         # Rellena la cuadrícula completamente
         self._fill_grid()
 
@@ -130,7 +158,7 @@ class Sudoku(Subgrid):
         self._remove_numbers(clues)
 
     def _fill_grid(self):
-        """Rellena la cuadrícula de Sudoku usando backtracking"""
+        # Rellena la cuadrícula de Sudoku usando backtracking
         find = self.find_empty()
         if not find:
             return True  # La cuadrícula está completamente llena
@@ -153,7 +181,7 @@ class Sudoku(Subgrid):
         return False  # Triggera backtracking
 
     def _remove_numbers(self, clues):
-        """Remueve números de la cuadrícula para dejar solo las pistas dadas"""
+        # Remueve números de la cuadrícula para dejar solo las pistas dadas
         total_cells = 81
         cells_to_remove = total_cells - clues
 

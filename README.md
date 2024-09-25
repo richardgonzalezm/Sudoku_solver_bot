@@ -18,6 +18,8 @@ classDiagram
         -_values
         +values() @property
         +values(new_values) @getter
+        +is_valid(num, pos) bool
+        +find_empty()
     }
     class Col {
         -values
@@ -51,6 +53,8 @@ classDiagram
         -cols: List of Col
         +grid()@property
         +grid(new_grid)@setter
+        +is_valid(num, pos) bool
+        +find_empty()
     }
 
     Col --* Subgrid

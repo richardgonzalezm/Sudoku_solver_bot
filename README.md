@@ -1,9 +1,9 @@
 # Sudoku solver bot
 
 ## Description
-This is a project to automatically solve an specific puzzle (a sudoku) and then upload it automatically to the web it came from. This would allow us to become absolute champions in the sudoku world.
+This is a project that automatically generates and solves an specific puzzle (a sudoku). Creating this bot, we realized what the internal processes to solve a sudoku were, and this helped us come up with our own personal ways to solve sudokus by ourselves.
 
-The code uses recursion and backtraking to solve the sudoku, reviewing each possibility for a solution in a matter of seconds, correcting itself until it finds the answer.
+The code uses recursion and backtraking to solve the sudoku, making it review each possibility for a solution in a matter of seconds, correcting itself over and over again until it finds the answer.
 
 To integrate an object-oriented programming, we designed the following class diagram.
 

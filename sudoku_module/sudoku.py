@@ -1,7 +1,7 @@
 import random
 
 
-class Grid:
+class Line:
     def __init__(self, values):
         self._values = values
 
@@ -17,12 +17,12 @@ class Grid:
         self._values = new_values
 
 
-class Row(Grid):
+class Row(Line):
     def __init__(self, values):
         super().__init__(values)
 
 
-class Col(Grid):
+class Col(Line):
     def __init__(self, values):
         super().__init__(values)
 

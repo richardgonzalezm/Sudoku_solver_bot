@@ -1,9 +1,11 @@
 # Sudoku solver bot
 
 ## Description
-This is a project to automatically solve an specific puzzle (a sudoku) and then upload it automatically to the web it came from. This would allow us to become absolute champions in the sudoku world without actually being so.
+This is a project to automatically solve an specific puzzle (a sudoku) and then upload it automatically to the web it came from. This would allow us to become absolute champions in the sudoku world.
 
-To integrate object-oriented programming, we designed the following class diagram.
+The code uses recursion and backtraking to solve the sudoku, reviewing each possibility for a solution in a matter of seconds, correcting itself until it finds the answer.
+
+To integrate an object-oriented programming, we designed the following class diagram.
 
 ## Class diagram
 
@@ -12,7 +14,7 @@ To integrate object-oriented programming, we designed the following class diagra
 title: Sudoku solver (and generator)
 ---
 classDiagram
-    class Grid {
+    class Line {
         -_values
         +values() @property
         +values(new_values) @getter
@@ -23,8 +25,8 @@ classDiagram
     class Row {
         -values
     }
-    Grid <|-- Col
-    Grid <|-- Row
+    Line <|-- Col
+    Line <|-- Row
     class Sudoku {
         -size: int
         +is_valid(num, pos) bool
@@ -76,18 +78,18 @@ classDiagram
         update_grid():
             Updates the GUI grid with the values from the Sudoku puzzle. Sets cells to read-only if they contain a value.
 
-"Grid" is a class to represent a Sudoku grid.
+"Line" is a class to represent a Sudoku horizontal or vertical line.
 
     -Attributes:
-        values (list): A list representing the values in the Sudoku grid.
+        values (list): A list representing the values in the Sudoku line.
     -Methods:
       __init__(values):
           Initializes the grid given a number of values.
       It also has a getter and a setter for its initializing values.
 
-"Col" represents a column. Inherits from Grid.
+"Col" represents a column. Inherits from Line.
 
-"Row" represents a row. Inherits from Grid.
+"Row" represents a row. Inherits from Line too.
 
 "Subgrid" is a class to represent a 3x3 subgrid in a Sudoku puzzle.
     
@@ -102,7 +104,8 @@ classDiagram
             A getter for the current grid.
         grid(new_grid):
             A setter that updates the grid. Raises ValueError if the new grid is not 3x3.
-"Sudoku": A class that represents a Sudoku puzzle.
+
+"Sudoku": A class that represents the Sudoku puzzle.
 
     -Attributes:
         size (int): The size of the Sudoku grid (default is 9).

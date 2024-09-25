@@ -83,9 +83,13 @@ classDiagram
     -Attributes:
         values (list): A list representing the values in the Sudoku line.
     -Methods:
-      __init__(values):
-          Initializes the grid given a number of values.
-      It also has a getter and a setter for its initializing values.
+      values:
+            Getter: Returns the current values of the line.
+            Setter: Sets new values for the line, ensuring the length matches the original.
+        is_valid(num):
+            Checks if a given number is not already present in the line.
+        find_empty():
+            Finds the first empty position (represented by 0) in the line and returns its index.
 
 "Col" represents a column. Inherits from Line.
 
@@ -104,6 +108,10 @@ classDiagram
             A getter for the current grid.
         grid(new_grid):
             A setter that updates the grid. Raises ValueError if the new grid is not 3x3.
+        is_valid(num, pos):
+            Checks if a number can be placed in the subgrid without violating the rules.
+        find_empty():
+            Finds the first empty cell (represented by 0) in the subgrid.
 
 "Sudoku": A class that represents the Sudoku puzzle.
 
@@ -117,11 +125,9 @@ classDiagram
             Checks if a given number can be placed at a given position in the grid
             without violating Sudoku rules.
         find_empty():
-            Finds an empty cell in the grid and returns its position as a tuple (row, col).
-            Returns None if there are no empty cells.
+            Finds an empty cell in the Sudoku grid.
         solve():
-            Solves the Sudoku puzzle using backtracking. Returns True if the puzzle is solved,
-            otherwise returns False.
+            Solves the Sudoku puzzle using backtracking.
         generate_sudoku(clues=30):
             Generates a Sudoku puzzle with a given number of clues. Fills the grid completely
             and then removes numbers to create the puzzle.
